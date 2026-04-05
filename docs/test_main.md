@@ -57,7 +57,7 @@ Verifica que los **valores introducidos por el usuario** se asignan correctament
 
 ---
 
-# ⚠️ Casos Límite (L)
+### ⚠️ Casos Límite (L)
 
 ## `test_start_app_completes_all_cycles`
 Verifica que con **un único ciclo configurado**, `countdown` se invoca exactamente **una vez** (solo la fase de trabajo, sin descanso posterior).

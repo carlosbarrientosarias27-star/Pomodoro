@@ -73,7 +73,7 @@ Verifica que un temporizador con duración muy pequeña (`0.01 min`) finaliza co
 
 ---
 
-# ⚠️ Casos Límite (L)
+### ⚠️ Casos Límite (L)
 
 ## `test_countdown_with_zero_minutes`
 Verifica que si `minutes=0`, el bucle no llega a ejecutarse y `sleep` no es invocado en ningún momento.
@@ -97,7 +97,7 @@ Verifica que si `app.running = False` antes de llamar a `countdown`, el cuerpo d
 
 ---
 
-# 🔴 Casos de Error y Edge Cases (E)
+### 🔴 Casos de Error y Edge Cases (E)
 
 ## `test_countdown_pause_loop_execution`
 Verifica que mientras la app está pausada (`paused=True`), el temporizador no decrementa el tiempo. El mock de `sleep` detiene el bucle tras la primera iteración.
