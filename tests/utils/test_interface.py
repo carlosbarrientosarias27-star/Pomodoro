@@ -1,19 +1,28 @@
 import pytest
-import os
+import subprocess
 import platform
 from src.utils.interface import clear_screen, progress_bar
 
 # --- Casos Normales (N) ---
 
 def test_clear_screen_windows_calls_cls(monkeypatch):
-    captured_command = []
-    monkeypatch.setattr(platform, "system", lambda: "Windows")
-    # Patch the actual module where os.system is called
-    monkeypatch.setattr("src.utils.interface.os.system", lambda cmd: captured_command.append(cmd))
+    captured_args = []
 
-    clear_screen(None)
-    # Check if the path contains 'cls'
-    assert any("cls" in cmd for cmd in captured_command)
+    # 1. Mock the platform to return Windows
+    monkeypatch.setattr(platform, "system", lambda: "Windows")
+
+    # 2. Mock subprocess.run instead of os.system
+    def mock_run(command, **kwargs):
+        captured_args.append(command)
+        return subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(subprocess, "run", mock_run)
+
+    # 3. Call without arguments (matches your interface.py definition)
+    clear_screen()
+
+    # 4. Verify the command list contains "cls"
+    assert captured_args[0] == ["cls"]
 
 
 def test_progress_bar_at_half_capacity():
@@ -68,14 +77,23 @@ def test_progress_bar_at_one_hundred_percent():
 
 
 def test_clear_screen_linux_calls_clear(monkeypatch):
-    captured_command = []
-    monkeypatch.setattr(platform, "system", lambda: "Linux")
-    # CRÍTICO: Parchear el os de la interfaz, no el os global
-    monkeypatch.setattr("src.utils.interface.os.system", lambda cmd: captured_command.append(cmd))
+    captured_args = []
 
+    # 1. Mock the platform to return Linux
+    monkeypatch.setattr(platform, "system", lambda: "Linux")
+
+    # 2. Mock subprocess.run
+    def mock_run(command, **kwargs):
+        captured_args.append(command)
+        return subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(subprocess, "run", mock_run)
+
+    # 3. Call the function
     clear_screen()
 
-    assert "clear" in captured_command
+    # 4. Verify the command list contains "clear"
+    assert captured_args[0] == ["clear"]
 
 
 # --- Casos de Error y Edge Cases (E) ---

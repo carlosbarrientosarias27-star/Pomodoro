@@ -3,9 +3,15 @@ import subprocess
 
 def clear_screen():
     sys_platform = platform.system()
-    command = "cls" if sys_platform == "Windows" else "clear"
-    # shell=True is needed for built-in shell commands like cls/clear
-    subprocess.run(command, shell=True)
+    # Use a list for the command and remove shell=True
+    command = ["cls"] if sys_platform == "Windows" else ["clear"]
+    
+    try:
+        # shell=False is the default behavior
+        subprocess.run(command, check=True)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        # Fallback if the command fails or isn't found
+        pass
 
 def progress_bar(current, total, length=30):
     if total <= 0:
