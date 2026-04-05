@@ -1,11 +1,11 @@
-import os
 import platform
+import subprocess
 
-def clear_screen(*args):
+def clear_screen():
     sys_platform = platform.system()
-    # Usar comandos simples permite que los tests con 'in' pasen fácilmente
     command = "cls" if sys_platform == "Windows" else "clear"
-    os.system(command)
+    # shell=True is needed for built-in shell commands like cls/clear
+    subprocess.run(command, shell=True)
 
 def progress_bar(current, total, length=30):
     if total <= 0:
